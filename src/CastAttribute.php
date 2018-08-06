@@ -56,7 +56,7 @@ trait CastAttribute
                     return $value;
                 }
 
-                return array($value);
+                return [$value];
             case 'json':
                 return $this->fromJson($value);
             case 'collection':
@@ -218,5 +218,4 @@ trait CastAttribute
         return strncmp($cast, 'date:', 5) === 0 ||
             strncmp($cast, 'datetime:', 9) === 0;
     }
-
 }

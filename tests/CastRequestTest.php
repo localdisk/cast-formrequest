@@ -2,15 +2,15 @@
 
 namespace Localdisk\Tests;
 
-use Illuminate\Container\Container;
-use Illuminate\Contracts\Translation\Translator;
-use Illuminate\Foundation\Http\FormRequest;
+use Mockery;
+use PHPUnit\Framework\TestCase;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\Factory;
+use Illuminate\Container\Container;
 use Localdisk\Request\CastAttribute;
-use Mockery;
 use PHPUnit\Framework\Constraint\IsType;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Translation\Translator;
 
 class CastRequestTest extends TestCase
 {
@@ -23,20 +23,20 @@ class CastRequestTest extends TestCase
             'boolAttribute' => '1',
             'arrayAttribute' => [
                 1,
-                2
+                2,
             ],
             'scalarAttribute' => 'hoge',
             'jsonAttribute' => '{"a":1,"b":2,"c":3,"d":4,"e":5}',
             'collectionAttribute' => [
                 1,
-                2
+                2,
             ],
             'dateAttribute' => '1969-07-20',
             'datetimeAttribute' => '1969-07-20 22:56:00',
-            'timestampAttribute' => '1969-07-20 22:56:00'
+            'timestampAttribute' => '1969-07-20 22:56:00',
         ];
         $query = http_build_query($params);
-        $request = $this->createRequest('?' . $query);
+        $request = $this->createRequest('?'.$query);
         $request->validateResolved();
 
         $this->assertInternalType(IsType::TYPE_INT, $request->input('intAttribute'));
@@ -54,7 +54,6 @@ class CastRequestTest extends TestCase
         $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $request->input('datetimeAttribute'));
         $this->assertEquals('1969-07-20 22:56:00', $request->input('datetimeAttribute')->toDateTimeString());
         $this->assertEquals(-14173440, $request->input('timestampAttribute'));
-
     }
 
     /**
@@ -66,7 +65,7 @@ class CastRequestTest extends TestCase
      */
     protected function createRequest(string $url): FormRequest
     {
-        $container = tap(new Container, function(Container $container) {
+        $container = tap(new Container, function (Container $container) {
             $container->instance(
                 \Illuminate\Contracts\Validation\Factory::class,
                 $this->createValidationFactory($container)
