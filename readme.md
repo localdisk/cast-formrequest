@@ -8,7 +8,7 @@ $ composer require localdisk/cast-formrequest
 <?php
 class BaseRequest extends FormRequest
 {
-    // use
+    // add use CastAttribute
     use CastAttribute;
 
     /**
